@@ -1,0 +1,4 @@
+name = "PSPICE To KICAD Convertor"
+description = "PSPICE To LICAD Convertor"
+package = "IITB"
+core = "7.x"
