@@ -736,7 +736,7 @@ function pspice_to_kicad_convert_approved()
 
 Dear " . $user_data->name . ",
 
-The uploaded PSpice file " . $row->upload_filename . " is successfully converted to Kicad format. This can be used in http://esim.fossee.in . You can download the converted file from http://esim.fossee.in/pspice-to-kicad/download/file/" . $fileid . "
+The uploaded PSpice file " . $row->upload_filename . " is successfully converted to Kicad format. This can be used in https://esim.fossee.in . You can download the converted file from https://esim.fossee.in/pspice-to-kicad/download/file/" . $fileid . "
 
 Best Wishes,<br>
 " . variable_get('site_name', '') . " Team,<br>
@@ -852,8 +852,7 @@ function pspice_to_kicad_upload_form_validate()
                 }
 
                 if (!pspice_to_kicad_check_valid_filename($_FILES['files']['name'][$file_form_name])) {
-                    form_set_error($file_form_name, t('Invalid file name specified. No Space are allowed in
- 			a filename.'));
+                    form_set_error($file_form_name, t('Invalid file name specified. No Space are allowed in a filename.'));
                 }
 
             }
