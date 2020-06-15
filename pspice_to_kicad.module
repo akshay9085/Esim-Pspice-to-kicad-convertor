@@ -1,22 +1,4 @@
 <?php
-function pspice_to_kicad_permission()
-{
-    return array(
-        "access pspice_to_kicad" => array(
-            "title" => t("Access pspice_to_kicad"),
-            "description" => t("Allows users to view converted."),
-        ),
-        "manage pspice_to_kicad" => array(
-            "title" => t("Upload pspice_to_kicad Files"),
-            "description" => t("Allows users to upload files for pspice to kicad convertor."),
-        ),
-        "convert pspice_to_kicad" => array(
-            "title" => t("Files to be converted"),
-            "description" => t("Allows admin to see files to be convert from pspice to kicad."),
-        ),
-
-    );
-}
 
 function pspice_to_kicad_menu()
 {
@@ -107,7 +89,7 @@ function pspice_to_kicad_menu()
         'title' => 'Delete File',
         'description' => 'Delete File',
         'page callback' => 'pspice_to_kicad_delete_file',
-        'access arguments' => array("convert pspice_to_kicad"),
+        'access arguments' => array("delete pspice_to_kicad file"),
         'type' => MENU_CALLBACK,
 
     );
@@ -146,6 +128,29 @@ function pspice_to_kicad_menu()
     );
 
     return $items;
+}
+
+function pspice_to_kicad_permission()
+{
+    return array(
+        "access pspice_to_kicad" => array(
+            "title" => t("Access pspice_to_kicad"),
+            "description" => t("Allows users to view converted."),
+        ),
+        "manage pspice_to_kicad" => array(
+            "title" => t("Upload pspice_to_kicad Files"),
+            "description" => t("Allows users to upload files for pspice to kicad convertor."),
+        ),
+        "convert pspice_to_kicad" => array(
+            "title" => t("Files to be converted"),
+            "description" => t("Allows admin to see files to be convert from pspice to kicad."),
+        ),
+        "delete pspice_to_kicad file" => array(
+          "title" => t("Files to be deleted"),
+          "description" => t("Allows admin to delete files from pspice to kicad."),
+      ),
+
+    );
 }
 
 function pspice_to_kicad_check_valid_filename($file_name)
@@ -396,7 +401,7 @@ function pspice_to_kicad_add_form_submit($form, &$form_state)
                             $from = variable_get('kicad_from_email', '');
                             $bcc = variable_get('kicad_emails', '');
                             $cc = variable_get('kicad_cc_emails', '');
-                            $subject = "Successful upload of PSpice schematic";
+                            $subject = "[esim.in][PSpice to KiCad Converter] Successful upload of PSpice schematic";
 
                             $email_body = "
 
@@ -730,13 +735,13 @@ function pspice_to_kicad_convert_approved()
             $from = variable_get('kicad_from_email', '');
             $bcc = variable_get('kicad_emails', '');
             $cc = variable_get('kicad_cc_emails', '');
-            $subject = "PSpice file converted successfully";
+            $subject = "[esim.in][PSpice to KiCad Converter] PSpice file converted successfully";
 
             $email_body = "
 
 Dear " . $user_data->name . ",
 
-The uploaded PSpice file " . $row->upload_filename . " is successfully converted to Kicad format. This can be used in http://esim.fossee.in . You can download the converted file from http://esim.fossee.in/pspice-to-kicad/download/file/" . $fileid . "
+The uploaded PSpice file " . $row->upload_filename . " is successfully converted to Kicad format. This can be used in https://esim.fossee.in . You can download the converted file from https://esim.fossee.in/pspice-to-kicad/download/file/" . $fileid . "
 
 Best Wishes,<br>
 " . variable_get('site_name', '') . " Team,<br>
@@ -852,8 +857,7 @@ function pspice_to_kicad_upload_form_validate()
                 }
 
                 if (!pspice_to_kicad_check_valid_filename($_FILES['files']['name'][$file_form_name])) {
-                    form_set_error($file_form_name, t('Invalid file name specified. No Space are allowed in
- 			a filename.'));
+                    form_set_error($file_form_name, t('Invalid file name specified. No Space are allowed in a filename.'));
                 }
 
             }
@@ -1111,7 +1115,6 @@ function pspice_to_kicad_delete_file()
     $querycheck = db_select('custom_kicad_convertor');
     $querycheck->fields('custom_kicad_convertor');
     $querycheck->condition('id', $fileid);
-    $querycheck->condition('converted_flag', "1");
     $resultcheck = $querycheck->execute();
     $number_of_rows = $resultcheck->rowCount();
 
@@ -1124,7 +1127,7 @@ function pspice_to_kicad_delete_file()
 
     } else {
 
-        drupal_set_message('Already converted file cannot be delete.', 'error');
+        drupal_set_message('File can not be deleted. Please contact to site administrator', 'error');
         drupal_goto("pspice-to-kicad/convert");
         return;
     }
@@ -1137,7 +1140,6 @@ function pspice_to_kicad_delete_file_form($form, &$form_state, $fileid)
     $querycheck = db_select('custom_kicad_convertor');
     $querycheck->fields('custom_kicad_convertor');
     $querycheck->condition('id', $fileid);
-    $querycheck->condition('converted_flag', "1");
     $resultcheck = $querycheck->execute();
     $number_of_rows = $resultcheck->rowCount();
 
@@ -1187,7 +1189,6 @@ function pspice_to_kicad_delete_file_form_submit($form, &$form_state)
     $querycheck = db_select('custom_kicad_convertor');
     $querycheck->fields('custom_kicad_convertor');
     $querycheck->condition('id', $fileid);
-    $querycheck->condition('converted_flag', "1");
     $resultcheck = $querycheck->execute();
     $row = $resultcheck->fetchObject();
 
@@ -1211,7 +1212,7 @@ function pspice_to_kicad_delete_file_form_submit($form, &$form_state)
     $from = variable_get('kicad_from_email', '');
     $bcc = variable_get('kicad_emails', '');
     $cc = variable_get('kicad_cc_emails', '');
-    $subject = "PSpice to KiCad converter: Uploaded schematic file deleted";
+    $subject = "[esim.in][PSpice to KiCad Converter] PSpice to KiCad converter: Uploaded schematic file deleted";
 
     $email_body = "
 
