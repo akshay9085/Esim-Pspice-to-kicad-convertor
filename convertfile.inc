@@ -1,6 +1,6 @@
 <?php
 
-function pspice_to_kicad_convert_file()
+function pspice_to_kicad_convert_test_file()
 {
 
     $upload_root_path = pspice_to_kicad_upload_path();
