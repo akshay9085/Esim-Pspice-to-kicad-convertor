@@ -625,7 +625,7 @@ function pspice_to_kicad_convert_file()
     $filePath = $upload_root_path . "" . $row->upload_filepath;
     $uploadfolder = $row->uid;
 
-    exec("/var/www/html/esim_in/sites/all/modules/pspice_to_kicad/convert.sh " . $convert_root_path . " " . $filePath . " " . $uploadfolder, $outputFiles);
+    exec("./convert.sh" . " " . $convert_root_path . " " . $filePath . " " . $uploadfolder, $outputFiles);
 
     $file = $row->upload_filename;
     $filearray = explode('.', $file);
@@ -646,6 +646,12 @@ function pspice_to_kicad_convert_file()
     header('Content-Type: ' . file_get_mimetype($converted_file));
     header('Content-disposition: attachment; filename="' . $filenamewothoutext . ".zip" . '"');
     header('Content-Length: ' . filesize($converted_file));
+    header("Content-Transfer-Encoding: binary");
+    header('Expires: 0');
+    header('Pragma: no-cache');
+    ob_end_flush();
+    ob_clean();
+    flush();
     readfile($converted_file);
 
 }
