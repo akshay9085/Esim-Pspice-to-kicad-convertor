@@ -1,22 +1,4 @@
 <?php
-function pspice_to_kicad_permission()
-{
-    return array(
-        "access pspice_to_kicad" => array(
-            "title" => t("Access pspice_to_kicad"),
-            "description" => t("Allows users to view converted."),
-        ),
-        "manage pspice_to_kicad" => array(
-            "title" => t("Upload pspice_to_kicad Files"),
-            "description" => t("Allows users to upload files for pspice to kicad convertor."),
-        ),
-        "convert pspice_to_kicad" => array(
-            "title" => t("Files to be converted"),
-            "description" => t("Allows admin to see files to be convert from pspice to kicad."),
-        ),
-
-    );
-}
 
 function pspice_to_kicad_menu()
 {
@@ -107,7 +89,7 @@ function pspice_to_kicad_menu()
         'title' => 'Delete File',
         'description' => 'Delete File',
         'page callback' => 'pspice_to_kicad_delete_file',
-        'access arguments' => array("convert pspice_to_kicad"),
+        'access arguments' => array("delete pspice_to_kicad file"),
         'type' => MENU_CALLBACK,
 
     );
@@ -146,6 +128,29 @@ function pspice_to_kicad_menu()
     );
 
     return $items;
+}
+
+function pspice_to_kicad_permission()
+{
+    return array(
+        "access pspice_to_kicad" => array(
+            "title" => t("Access pspice_to_kicad"),
+            "description" => t("Allows users to view converted."),
+        ),
+        "manage pspice_to_kicad" => array(
+            "title" => t("Upload pspice_to_kicad Files"),
+            "description" => t("Allows users to upload files for pspice to kicad convertor."),
+        ),
+        "convert pspice_to_kicad" => array(
+            "title" => t("Files to be converted"),
+            "description" => t("Allows admin to see files to be convert from pspice to kicad."),
+        ),
+        "delete pspice_to_kicad file" => array(
+          "title" => t("Files to be deleted"),
+          "description" => t("Allows admin to delete files from pspice to kicad."),
+      ),
+
+    );
 }
 
 function pspice_to_kicad_check_valid_filename($file_name)
