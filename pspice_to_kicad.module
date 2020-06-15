@@ -401,7 +401,7 @@ function pspice_to_kicad_add_form_submit($form, &$form_state)
                             $from = variable_get('kicad_from_email', '');
                             $bcc = variable_get('kicad_emails', '');
                             $cc = variable_get('kicad_cc_emails', '');
-                            $subject = "Successful upload of PSpice schematic";
+                            $subject = "[esim.in][PSpice to KiCad Converter] Successful upload of PSpice schematic";
 
                             $email_body = "
 
@@ -735,7 +735,7 @@ function pspice_to_kicad_convert_approved()
             $from = variable_get('kicad_from_email', '');
             $bcc = variable_get('kicad_emails', '');
             $cc = variable_get('kicad_cc_emails', '');
-            $subject = "PSpice file converted successfully";
+            $subject = "[esim.in][PSpice to KiCad Converter] PSpice file converted successfully";
 
             $email_body = "
 
@@ -1212,7 +1212,7 @@ function pspice_to_kicad_delete_file_form_submit($form, &$form_state)
     $from = variable_get('kicad_from_email', '');
     $bcc = variable_get('kicad_emails', '');
     $cc = variable_get('kicad_cc_emails', '');
-    $subject = "PSpice to KiCad converter: Uploaded schematic file deleted";
+    $subject = "[esim.in][PSpice to KiCad Converter] PSpice to KiCad converter: Uploaded schematic file deleted";
 
     $email_body = "
 
