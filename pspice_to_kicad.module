@@ -1115,7 +1115,6 @@ function pspice_to_kicad_delete_file()
     $querycheck = db_select('custom_kicad_convertor');
     $querycheck->fields('custom_kicad_convertor');
     $querycheck->condition('id', $fileid);
-    $querycheck->condition('converted_flag', "1");
     $resultcheck = $querycheck->execute();
     $number_of_rows = $resultcheck->rowCount();
 
@@ -1128,7 +1127,7 @@ function pspice_to_kicad_delete_file()
 
     } else {
 
-        drupal_set_message('Already converted file cannot be delete.', 'error');
+        drupal_set_message('File can not be deleted. Please contact to site administrator', 'error');
         drupal_goto("pspice-to-kicad/convert");
         return;
     }
@@ -1141,7 +1140,6 @@ function pspice_to_kicad_delete_file_form($form, &$form_state, $fileid)
     $querycheck = db_select('custom_kicad_convertor');
     $querycheck->fields('custom_kicad_convertor');
     $querycheck->condition('id', $fileid);
-    $querycheck->condition('converted_flag', "1");
     $resultcheck = $querycheck->execute();
     $number_of_rows = $resultcheck->rowCount();
 
@@ -1191,7 +1189,6 @@ function pspice_to_kicad_delete_file_form_submit($form, &$form_state)
     $querycheck = db_select('custom_kicad_convertor');
     $querycheck->fields('custom_kicad_convertor');
     $querycheck->condition('id', $fileid);
-    $querycheck->condition('converted_flag', "1");
     $resultcheck = $querycheck->execute();
     $row = $resultcheck->fetchObject();
 
