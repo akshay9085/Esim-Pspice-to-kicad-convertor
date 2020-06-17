@@ -1,16 +1,21 @@
 #!/bin/bash
 
 #Log file location
-log="/var/log/psicekicad.log"
+log="/tmp/psicekicad.log"
+cmd_path1="/home/prashant/www/html/drupal/drupal_7.x/r_fossee_in/sites/all/modules/custom/pspice_to_kicad/"
+cmd_path2="eSim_PSpice_to_KiCad_Python_Parser/lib/PythonLib/"
+parser_command="parser.py "
 
 echo "###########Start Conversion from PSPICE to KICAD#################" >> $log
 echo "" >>$log
 echo "The Conversion starts at `date`" >> $log
 ####Getting Parameter
-convertedSchematic=$1 
-filepath=$2 
-username=$3 
+convertedSchematic=$1
+filepath=$2
+username=$3
 cwd=`pwd`
+echo $filepath
+echo $convertedSchematic
 
 echo "">>$log
 echo "The paramters to the script is : ">>$log
@@ -25,29 +30,29 @@ echo "">>$log
 
 #Create Directory for every User
 
-if [ -d $convertedSchematic/$username ];then
-    echo "User directory $username is already available">>$log
+if [ -d $convertedSchematic ];then
+    echo "User directory $convertedSchematic is already available">>$log
 else
-    mkdir -p $convertedSchematic/$username
+    mkdir -p $convertedSchematic
 fi
 
-echo "The converted file will be present at $convertedSchematic/$username">>$log
+echo "The converted file will be present at $convertedSchematic">>$log
 
 #Creating directory for uploaded Project
-mkdir -p $convertedSchematic/$username/$filewithoutExt
+mkdir -p $convertedSchematic/$filewithoutExt
 
 #Converting PSpice to Kicad Schematic
 echo "Calling Schematic conversion script" >>$log
-/var/www/html/esim_in/sites/all/modules/pspice_to_kicad/schConverter64 $filepath $convertedSchematic/$username/$filewithoutExt/$filename 2>&1>>$log
+python3.7 $cmd_path1$cmd_path2$parser_command $filepath $convertedSchematic/$filewithoutExt
 
 #Converting to Zip file
-cd $convertedSchematic/$username
+cd $convertedSchematic
 #sudo zip -rq -rm $zipname $filewithoutExt
 echo "Creating zip file of converted project">>$log
 zip -r $filewithoutExt{.zip,} 2>&1>>$log
 echo "The zip file is present at `pwd`">>$log
 cd $cwd
-rm -rf $convertedSchematic/$username/$filewithoutExt
+rm -rf $convertedSchematic/$filewithoutExt
 
 echo "###########End PSICE to KICAD Conversion#########################">>$log
 echo " ">>$log
