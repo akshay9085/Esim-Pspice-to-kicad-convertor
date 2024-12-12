@@ -590,10 +590,11 @@ function pspice_to_kicad_view()
     $rows = array();
 
     $header = array(
-        array('data' => 'Date'),
+        
         array('data' => 'Uploaded by'),
         array('data' => 'Download'),
         array('data' => ''),
+        array('data' => 'Date'),
 
     );
 
@@ -613,10 +614,10 @@ function pspice_to_kicad_view()
         $user = $query->execute();
         $user_data = $user->fetchObject();
 
-        $item = array(date('d-m-Y', strtotime($row->converted_date)), $user_data->name,
+        $item = array( $user_data->name,
             l($row->converted_filename, '/pspice-to-kicad/download/file/' . $row->id, array('attributes' => array('title' => 'Click to download converted file'))),
             "<a href='description/{$row->id}' class='autodialog' data-dialog-width='700' title='Click to view more detail about file'>Detail</a>",
-
+            date('d-m-Y', strtotime($row->converted_date)),
         );
         array_push($rows, $item);
     }
